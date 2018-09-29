@@ -1,2 +1,2 @@
 this is a test file for git
-git is a great software for version control
+git is a great software for version control and distributed.
