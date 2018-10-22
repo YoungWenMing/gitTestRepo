@@ -23,6 +23,17 @@ public class SortingTest {
         return a;
     }
 
+    public void randomShuffler(Comparable[] a, double rate){
+        int len = a.length;
+        int number =(int)  rate * len;
+        for (int i =0; i < number; i ++){
+            int x = StdRandom.uniform(len), y = StdRandom.uniform(len);
+            Comparable z = a[x];
+            a[x] = a[y];
+            a[y] = z;
+        }
+    }
+
     public static void main(String[] args){
         //int initScale = Integer.parseInt(args[0]);
         //int times = Integer.parseInt(args[1]);
@@ -31,7 +42,7 @@ public class SortingTest {
         SelectionSort sorterSelect = new SelectionSort();
         InsertionSort sorterInsert = new InsertionSort();
 
-        int N = 20000;
+        int N = 80000;
 
         Integer[] testArray = ST.randomGenerator(N);
         Integer[] testArray2 = ST.randomGenerator(N);
@@ -39,8 +50,19 @@ public class SortingTest {
         long time1 = ST.testTime(testArray, sorterSelect);
         long time2 = ST.testTime(testArray2, sorterInsert);
 
-        System.out.println("SelectionSort for " + N + " random items " + time1 );
-        System.out.println("InsertionSort for " + N + " random items " + time2 );
+        System.out.println("for totally random array: ");
+        System.out.println("SelectionSort for " + N + " random items " + time1 + "  milliseconds");
+        System.out.println("InsertionSort for " + N + " random items " + time2 + "  milliseconds");
+
+        ST.randomShuffler(testArray, 0.1);
+        ST.randomShuffler(testArray2, 0.1);
+        time1 = ST.testTime(testArray, sorterSelect);
+        time2 = ST.testTime(testArray2, sorterInsert);
+
+        System.out.println("for almost sorted array:");
+        System.out.println("SelectionSort for " + N + " random items " + time1 + "  milliseconds");
+        System.out.println("InsertionSort for " + N + " random items " + time2 + "  milliseconds");
+
         /*
         for (int i = 0; i < times; i ++){
             Integer[] X = ST.randomGenerator(initScale);
