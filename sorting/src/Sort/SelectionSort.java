@@ -9,14 +9,29 @@ public class SelectionSort implements Sorter {
     public void sort(Comparable[] a){
         for (int i = 0, n = a.length; i < n; i ++){
             int min = findMin(a, i);
-            exch(a, min, i);
+            Sorter.exch(a, min, i);
         }
     }
 
+
+    public void visualizeSort(Double[] a){
+        SortingVisualizer SV = new SortingVisualizer(a);
+        SV.drawColumn(new Integer[]{});
+        for (int i = 0, n = a.length; i < n; i ++){
+            int min = findMin(a, i);
+            SV.drawColumn(new Integer[]{i, min});
+            Sorter.exch(a, min, i);
+            //SV.drawColumn(new Integer[]{min, i});
+        }
+    }
+
+    /*
     @Override
     public boolean less(Comparable v, Comparable w){
         return v.compareTo(w) < 0;
-    }
+    }*/
+
+
 
 
     /*
@@ -26,7 +41,7 @@ public class SelectionSort implements Sorter {
         Comparable candidate = a[i];
         int pos = i;
         for(int n = a.length ; i < n; i ++ ){
-            if(less(a[i], candidate)){
+            if(Sorter.less(a[i], candidate)){
                 candidate = a[i];
                 pos = i;
             }
@@ -34,20 +49,11 @@ public class SelectionSort implements Sorter {
         return pos;
     }
 
-    @Override
-    public void exch(Comparable[] a, int i, int j){
-        Comparable t = a[i];
-        a[i] = a[j];
-        a[j] = t;
-    }
-
-    public boolean isSorted(Comparable[] a) {
-        for (int i = 1, n = a.length; i < n; i += 1)
-            if (less(a[i], a[i - 1])) return false;
-        return true;
-    }
 
 
+
+
+    /*
     public static void main(String args[]){
         Integer a[] = new Integer[10];
         for(int i = 0; i < 10; i ++){
@@ -60,4 +66,18 @@ public class SelectionSort implements Sorter {
         for (int x : a)
             System.out.print("  " + x);
     }
+    */
+
+    public static void main(String args[]){
+        Double a[] = new Double[30];
+        for(int i = 0; i < a.length; i ++){
+            a[i] = StdRandom.uniform(0.0, 20.0);
+            System.out.print("  " + a[i]);
+        }
+        System.out.println("after sorting :");
+        SelectionSort sorter = new SelectionSort();
+        sorter.visualizeSort(a);
+
+    }
+
 }
