@@ -21,7 +21,22 @@ public class MergeSort implements Sorter {
 
     public static void sortBUInsertion(Comparable[] a){
         temp = new Comparable[a.length];
-        sortWithInsertion(a, 0, a.length - 1);
+        sortBUInsertion(a, 0, a.length - 1);
+    }
+
+    public static void sortBottomToUp(Comparable[] a){
+        int len = a.length;
+        temp = new Comparable[len];
+        int step = 1;
+        while (step < len){
+            for (int i = 0;i < len;i += 2 * step){
+                int mid = i + step - 1;
+                if (mid >= len - 1)     continue;       //if the first part to merge is out of range, just continue
+                int j = mid + step >= len? len - 1: mid + step;
+                merge(a, i, mid, j);
+            }
+            step *= 2;
+        }
     }
 
     /*
@@ -44,13 +59,13 @@ public class MergeSort implements Sorter {
     * we apply insertion sort to small pieces of the total array
     * */
 
-    private static void sortWithInsertion(Comparable[] a, int lo, int hi){
+    private static void sortBUInsertion(Comparable[] a, int lo, int hi){
         if (hi - lo <= 15) InsertionSort.sortPartly(a, lo, hi + 1);
         else if(lo >= hi)   return;
         else {
             int mid = lo + (hi - lo) / 2;
-            sortWithInsertion(a, mid+ 1, hi);
-            sortWithInsertion(a, lo, mid);
+            sortBUInsertion(a, mid+ 1, hi);
+            sortBUInsertion(a, lo, mid);
             merge(a, lo, mid, hi);
         }
     }
@@ -78,17 +93,21 @@ public class MergeSort implements Sorter {
     public static void main(String[] args){
         /*
         Double[] toSort = new Double[]{1.0, 3.0, 5.0, 2.0, 4.0, 6.0};
-        System.out.println("before sorting.");
-        SortingVisualizer.printArray(toSort);
+        Double[] toSort2 = new Double[]{1.0};
+
+        //System.out.println("before sorting.");
+        //SortingVisualizer.printArray(toSort);
         //MergeSort.merge(toSort, 0, 2, 5);
         //MergeSort MS = new MergeSort();
-        MergeSort.sortBU(toSort);
+        MergeSort.sortBottomToUp(toSort2);
 
         System.out.println("after sorting.");
-        SortingVisualizer.printArray(toSort);
+        for (double x : toSort2)     System.out.print(x + " ");
         */
-        Double[] A1 = SortingTest.randomGenerator(80000, 100.0);
+
+        Double[] A1 = SortingTest.randomGenerator(40000, 100.0);
         Double[] A2 = A1.clone();
+        Double[] A3 = A1.clone();
 
         long start = System.currentTimeMillis();
         MergeSort.sortBUInsertion(A1);
@@ -100,6 +119,10 @@ public class MergeSort implements Sorter {
         time  = System.currentTimeMillis();
         System.out.printf("sorting without insertion costs %d milliseconds", (time - start));
 
+        start = System.currentTimeMillis();
+        MergeSort.sortBottomToUp(A3);
+        time  = System.currentTimeMillis();
+        System.out.printf("sorting without insertion from bottom to up costs %d milliseconds", (time - start));
     }
 
 }
